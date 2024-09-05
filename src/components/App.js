@@ -1,4 +1,7 @@
 import React, { useEffect} from 'react';
+import { Route, Routes, Navigate, Redirect} from 'react-router-dom';
+import Login from './Login.js';
+import Register from './Register.js'
 import Header from './Header';
 import Main from './Main';
 import Footer from './Footer';
@@ -9,6 +12,7 @@ import EditProfilePopup from './EditProfilePopup.js';
 import EditAvatarPopup from './EditAvatarPopup.js';
 import AddPlacePopup from './AddPlacePopup.js';
 import ConfirmationDeletePopup from './ConfirmationDeletePopup.js';
+import ProtectedRoute from './ProtectedRoute.js';
 
 
 
@@ -18,9 +22,11 @@ function App() {
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = React.useState(true);
   const [isConfirmacionPopupOpen, setIsConfirmacionPopupOpen] = React.useState(true);
   const [isOpenImagePopup, setIsOpenImagePopup] = React.useState(true);
+  const [isOpeninfoToolPopup,setIsOpeninfoToolPopup] = React.useState(true);
   const [selectedCard, setSelectedCard] = React.useState(null)
   const [currentUser, setCurrentUser] = React.useState({});
   const [cards, setCards] = React.useState([]);
+  const [isLoggedIn, setIsLoggedIn] = React.useState(true);
   
 
     useEffect(() => {
@@ -31,7 +37,7 @@ function App() {
 
               const cardInfo = await api.getCards();
               setCards(cardInfo)
-                
+              
             } catch (error) {
                 console.error("Error fetching user data:", error);
             }
@@ -68,6 +74,7 @@ function App() {
     setIsAddPlacePopupOpen(true);
     setIsConfirmacionPopupOpen(true);
     setIsOpenImagePopup(true);
+    setIsOpeninfoToolPopup(true);
   }
 
 
@@ -125,51 +132,64 @@ function App() {
   return (
     <CurrentUserContext.Provider value ={currentUser}>
       <div className="App">
-
         <div className="root">
-          < Header />
+        <Routes>
+          <Route path="/signin" element={<Login/>}/>
+          <Route path="/signup" element={<Register/>}/>
+          <Route
+            path="/profile"
+            element={
+              <ProtectedRoute
+                isLoggedIn={isLoggedIn}>
+                    < Header />
   
-          < Main 
-          onEditProfileClick={handleEditProfileClick} 
-          onAddPlaceClick={handleAddPlaceClick} 
-          onEditAvatarClick={handleEditAvatarClick}
-          onCardClick={handleCardClick}
-          cards={cards}
-          onConfirmationDelete={handleConfirmationClick}
-          onCardLike={handleCardLike}
+                    < Main 
+                      onEditProfileClick={handleEditProfileClick} 
+                      onAddPlaceClick={handleAddPlaceClick} 
+                      onEditAvatarClick={handleEditAvatarClick}
+                      onCardClick={handleCardClick}
+                      cards={cards}
+                      onConfirmationDelete={handleConfirmationClick}
+                      onCardLike={handleCardLike}
+                    />
+
+                    <Footer/>
+
+                    <ImagePopup
+                      isOpen={isOpenImagePopup}
+                      card={selectedCard}
+                      onClose={closeAllPopups}
+                    />
+
+                    <ConfirmationDeletePopup
+                      isOpen={isConfirmacionPopupOpen}
+                      onClose={closeAllPopups}
+                      onUpdateDelete={handleCardDelete}
+                    />
+
+                    <EditAvatarPopup 
+                      isOpen={isEditAvatarPopupOpen} 
+                      onClose={closeAllPopups} 
+                      onUpdateAvatar={handleUpdateAvatar}
+                    />
+
+                    <EditProfilePopup 
+                      isOpen={isEditProfilePopupOpen} 
+                      onClose={closeAllPopups}
+                      onUpdateUser={handleUpdateUser}
+                    />
+
+                    <AddPlacePopup
+                      isOpen={isAddPlacePopupOpen}
+                      onClose={closeAllPopups}
+                      onAddCard={handleAddCard}
+                    />
+                  
+                </ProtectedRoute>
+            }
           />
-
-          <Footer/>
-
-          <ImagePopup
-          isOpen={isOpenImagePopup}
-          card={selectedCard}
-          onClose={closeAllPopups}
-         />
-
-          <ConfirmationDeletePopup
-          isOpen={isConfirmacionPopupOpen}
-          onClose={closeAllPopups}
-          onUpdateDelete={handleCardDelete}
-          />
-
-          <EditAvatarPopup 
-          isOpen={isEditAvatarPopupOpen} 
-          onClose={closeAllPopups} 
-          onUpdateAvatar={handleUpdateAvatar}
-          />
-
-          <EditProfilePopup 
-          isOpen={isEditProfilePopupOpen} 
-          onClose={closeAllPopups}
-          onUpdateUser={handleUpdateUser}
-          />
-
-          <AddPlacePopup
-          isOpen={isAddPlacePopupOpen}
-          onClose={closeAllPopups}
-          onAddCard={handleAddCard}
-          />
+          <Route path="/" element={isLoggedIn? <Navigate to='/profile'/> : <Navigate to='/signin'/>}/>
+        </Routes>
         </div>
 
       </div>

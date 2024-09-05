@@ -1,0 +1,91 @@
+.popup-InfoTooltip{
+    display: flex;
+    min-width: 100%;
+    min-height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    position: fixed;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    top: 0px;
+    z-index: 1;
+    transition: all .7s ease;
+}
+
+.popup-confirmation-opened{
+    visibility: hidden;
+    opacity: 0;
+}
+
+
+.popup-confirmation-opened{
+    visibility: hidden;
+    opacity: 0;
+}
+
+.popup-InfoTooltip__group{
+    position: relative;
+    position: fixed;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-direction: column;
+    top: 130px;
+    width: 37.4%;
+    height: 260px;
+    margin-left: 56px;
+}
+
+.popup-InfoTooltip__icon-close{
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    right: 0px;
+    top:0px;
+    margin-top: 0;
+    height: 40px;
+    width: 40px;
+    font-size: 6.5vw;
+    font-family: Arial, sans-serif;
+    font-weight: lighter;
+    transform: rotate(45deg);
+}
+
+.popup-InfoTooltip__icon-close:hover{
+    color: rgba(255, 255, 255, 0.6);
+     cursor: pointer;
+ }
+
+.popup-InfoTooltip__container{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    position: absolute;
+    background-color: white;
+    width: 430px;
+    height: 320px;
+    margin-top: 30%;
+    border-radius: 10px;
+    box-shadow: 0px 0px 25px rgba(0, 0, 0, 0.15);
+    left: 0%;
+   
+}
+
+.popup-InfoTooltip__icon{
+    width: 120px;
+    height: 120px;
+    margin-top: 10%;
+}
+
+.popup-InfoTooltip__text{
+    margin-top: 0%;
+    color: black;
+    width: 75%;
+    Line-height: 29.05px;
+    margin-right: 10px;
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+}

@@ -1,5 +1,7 @@
 @import url(./vendor/normalize.css);
 @import url(./blocks/root/root.css);
+@import url(./blocks/login/login.css);
+@import url(./blocks/signup/signup.css);
 @import url(./blocks/header/header.css);
 @import url(./blocks/header/__logo/header__logo.css);
 @import url(./blocks/header/__line/header__line.css);
@@ -57,4 +59,5 @@
 @import url(./blocks/popup-image-profile/__group/__container/__imput-text/popup-image-profile__imput-text.css);
 @import url(./blocks/popup-image-profile/__group/__container/__text/popup-image-profile__text.css);
 @import url(./blocks/popup-image-profile/__group/__icon-close/popup-image-profile__icon-close.css);
+@import url(./blocks/popup-infoTooltip/popup-infoTooltip.css);
 @import url(./blocks/profile/__avatar/__elipce/__image-edit/profile__image-edit.css);

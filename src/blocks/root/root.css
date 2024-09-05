@@ -3,6 +3,7 @@
     src: url(../../font/Inter-Regular.otf) format("opentype");
 }
 
+
 .root{
     background-color: black;
     min-width: 1280px;

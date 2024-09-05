@@ -7,6 +7,15 @@
     height: 74px;
 }
 
+.header__nav{
+    margin-left: auto;
+}
+.header__nav:hover{
+    color: #787878;
+    cursor: pointer;
+}
+
+
 
 @media screen and (max-width: 320px) {
     .header{
