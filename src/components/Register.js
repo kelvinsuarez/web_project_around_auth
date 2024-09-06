@@ -13,7 +13,7 @@ function Register () {
     const handleSubmit = (e) => {
         e.preventDefault();
             auth.register(values)
-            .then((res) => {navigate('/signin')})
+            .then(() => {navigate('/signin')})
             .catch((err) => console.log(err));
         
     };
@@ -43,6 +43,8 @@ function Register () {
                         name="password"
                         placeholder="contraseña"
                         className="signup__imput-text"
+                        value={values.password}
+                        onChange={handleChange}
                         autoComplete="off"
                     />
                     <button onClick={handleSubmit} className=" signup__button-save">Regístrate</button>

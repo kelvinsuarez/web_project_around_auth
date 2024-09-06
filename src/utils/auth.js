@@ -1,10 +1,10 @@
-const BASE_URL = "https://register.nomoreparties.co";
+const BASE_URL = "https://tripleten.desarrollointerno.com";
 
 export const register = ({email, password}) => {
     return fetch(`${BASE_URL}/signup`, {
         method: 'POST',
         headers:{
-            Accept: 'application/jason', 'Content-Type': 'application/json'
+            Accept: 'application/json', 'Content-Type': 'application/json'
         },
         body: JSON.stringify({email, password})
     })
