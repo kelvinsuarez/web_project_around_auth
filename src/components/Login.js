@@ -1,6 +1,6 @@
 import React from "react";
 import Logo from '../images/header/Vector.svg';
-import{Navigate} from 'react-router-dom';
+import{Navigate, NavLink, useNavigate } from 'react-router-dom';
 import InfoTooltip from './InfoTooltip.js';
 
 function Login ({isLoggedIn}) {
@@ -15,28 +15,28 @@ function Login ({isLoggedIn}) {
                 <hr className="header__line"/>
             </header>
             <div className="login">
-                <form name="profile" className="login__container" novalidate>
+                <form name="profile" className="login__container" noValidate>
                     <h2 className="login__text" >Inicia sesión</h2>
                     <input type="text" 
                         id="correo_electronico"
                         name="correo_electronico"
                         placeholder="correo_electronico" 
-                        minlength="2" maxlength="40" 
+                        minLength="2" maxLength="40" 
                         className="login__imput-text"
                         required
-                        autocomplete="off"
+                        autoComplete="off"
                     />
                     <input type="text" 
                         id="contraseña"
                         name="contraseña"
                         placeholder="contraseña"
-                        minlength="2" maxlength="200"
+                        minLength="2" maxLength="200"
                         className="login__imput-text"
                         required
-                        autocomplete="off"
+                        autoComplete="off"
                     />
                     <button className=" login__button-save">Inicia sesión</button>
-                    <p className="login__link-register">¿Aún no eres miembro? Regístrate aquí</p>
+                    <NavLink to='/signup' className="signup__link-register">¿Aún no eres miembro? Regístrate aquí</NavLink>
                 </form>
             </div>
             <InfoTooltip/>

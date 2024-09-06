@@ -4,26 +4,23 @@ import Logo from '../images/header/Vector.svg';
 import { NavLink, useNavigate } from "react-router-dom";
 
 function Register () {
-    const history = useNavigate();
+    const navigate = useNavigate();
     const [values, setValues] = useState({
-        username: '',
         email: '',
         password: '',
-        confirmPassword: '',
     });
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        if(values.password === values.confirmPassword){
             auth.register(values)
-            .them((res) => {history.push('/signin')})
+            .then((res) => {navigate('/signin')})
             .catch((err) => console.log(err));
-        }
+        
     };
 
     const handleChange = (event) => {
         const {name, value} = event.target;
-        setValues({...values, [name]: value})
+        setValues({...values, [name]: value});
     }
     return(
         <>
@@ -33,28 +30,25 @@ function Register () {
                 <hr className="header__line"/>
             </header>
             <div className="signup">
-                <form name="profile" className="signup__container" novalidate>
+                <form name="profile" className="signup__container">
                     <h2 className="signup__text" >Regístrate</h2>
                     <input type="text" 
-                        id="correo_electronico"
-                        name="correo_electronico"
-                        placeholder="correo_electronico" 
-                        minlength="2" maxlength="40" 
                         className="signup__imput-text"
-                        required
-                        autocomplete="off"
+                        name="email"
+                        placeholder="correo_electronico"
+                        value={values.email}
+                        onChange={handleChange}
                     />
                     <input type="text" 
-                        id="contraseña"
-                        name="contraseña"
+                        name="password"
                         placeholder="contraseña"
-                        minlength="2" maxlength="200"
                         className="signup__imput-text"
-                        required
-                        autocomplete="off"
+                        autoComplete="off"
                     />
-                    <button className=" signup__button-save">Regístrate</button>
-                    <p className="signup__link-register">¿Ya eres miembro? Inicia sesión aquí</p>
+                    <button onClick={handleSubmit} className=" signup__button-save">Regístrate</button>
+                    
+                    <NavLink to='/signin' className="signup__link-register">¿Ya eres miembro? Inicia sesión aquí</NavLink>
+                   
                 </form>
             </div>
         </>

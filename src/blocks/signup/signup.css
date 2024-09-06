@@ -67,6 +67,9 @@
     line-height: 16.94px;
     align-items: center;
     margin-bottom: 40px;
+    margin-top: 10px;
+    color: white;
+    text-decoration: none;
 }
 
 .signup__link-register:hover{

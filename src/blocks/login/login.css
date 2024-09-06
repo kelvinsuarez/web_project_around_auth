@@ -62,11 +62,14 @@
     cursor: pointer;
 }
 
-.login__link-register{
+.signup__link-register{
     font-size: 14px;
     line-height: 16.94px;
     align-items: center;
     margin-bottom: 40px;
+    margin-top: 10px;
+    color: white;
+    text-decoration: none;
 }
 
 .login__link-register:hover{

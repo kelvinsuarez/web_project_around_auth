@@ -1,12 +1,12 @@
 const BASE_URL = "https://register.nomoreparties.co";
 
-export const register = ({username, email, password}) => {
-    return fetch(`${BASE_URL}/signug`, {
+export const register = ({email, password}) => {
+    return fetch(`${BASE_URL}/signup`, {
         method: 'POST',
         headers:{
             Accept: 'application/jason', 'Content-Type': 'application/json'
         },
-        body: JSON.stringify({username, email, password})
+        body: JSON.stringify({email, password})
     })
     .then((res) => res.json())
     .then((data) => {
@@ -15,5 +15,5 @@ export const register = ({username, email, password}) => {
         }
         console.log(data)
     })
-    .catcha((err) => console.log(err));
+    .catch((err) => console.log(err));
 }
