@@ -27,11 +27,22 @@ export const authorize = (email, password) => {
         },
         body: JSON.stringify({email, password})
     })
-    .then((response => response.json()))
+    .then((response) => {
+        if (!response.ok) {
+            return response.json().then((err) => {
+                throw new Error(`Error: ${response.status} - ${err.message}`)
+            })
+        }
+        return  response.json()
+    })
     .then((data) => {
         if (data.jwt) {
-            localStorage.setItem('jwt', data.jwt);
+            console.log("Token JWT recibido:", data.jwt);
+            localStorage.setItem('jwt', data.token);
+            console.log("Token almacenado en localStorage:", localStorage.getItem('jwt'))
             return data;
+        } else {
+            throw new Error('No se recibio ningun token JWT')
         }
     })
     .catch(err => console.log(err))

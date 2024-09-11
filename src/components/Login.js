@@ -26,6 +26,7 @@ function Login ({handleLogin}) {
         auth.authorize(email, password)
         .then((data) => {
             if (data.jwt) {
+                console.log('Token JWT desde el componente Login:', data.jwt);
                 setEmail('');
                 setPassword('');
                 handleLogin()
