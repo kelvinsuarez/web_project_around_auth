@@ -26,7 +26,7 @@ function App() {
   const [selectedCard, setSelectedCard] = React.useState(null)
   const [currentUser, setCurrentUser] = React.useState({});
   const [cards, setCards] = React.useState([]);
-  const [isLoggedIn, setIsLoggedIn] = React.useState(true);
+  const [isLoggedIn, setIsLoggedIn] = React.useState(false);
   
 
     useEffect(() => {
@@ -129,12 +129,17 @@ function App() {
     }
   };
 
+  const handleLogin = (e) => {
+    e.preventDefault();
+    setIsLoggedIn(true)
+  }
+
   return (
     <CurrentUserContext.Provider value ={currentUser}>
       <div className="App">
         <div className="root">
         <Routes>
-          <Route path="/signin" element={<Login/>}/>
+          <Route path="/signin" element={<Login handleLogin={handleLogin} />}/>
           <Route path="/signup" element={<Register/>}/>
           <Route
             path="/profile"

@@ -1,12 +1,40 @@
-import React from "react";
+import React, { useState } from "react";
 import Logo from '../images/header/Vector.svg';
-import{Navigate, NavLink, useNavigate } from 'react-router-dom';
+import{ NavLink, useNavigate } from 'react-router-dom';
 import InfoTooltip from './InfoTooltip.js';
+import * as auth from '../utils/auth.js'
 
-function Login ({isLoggedIn}) {
-    if (isLoggedIn) {
-        return <Navigate to="/ProtectedRoute"/>;
+function Login ({handleLogin}) {
+    const navigate = useNavigate();
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+
+    const handleChange = (e) => {
+        const {name, value} = e.target;
+        if(name === 'email') {
+            setEmail(value);
+        }else if (name === 'password') {
+            setPassword(value);
+        }
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        if (!email || !password) {
+            return;
+        }
+        auth.authorize(email, password)
+        .then((data) => {
+            if (data.jwt) {
+                setEmail('');
+                setPassword('');
+                handleLogin()
+                navigate('/profile')
+            }
+        })
+        .catch((err) => console.log (err))
     }
+
     return(
         <>
             <header className="header">
@@ -18,24 +46,21 @@ function Login ({isLoggedIn}) {
                 <form name="profile" className="login__container" noValidate>
                     <h2 className="login__text" >Inicia sesión</h2>
                     <input type="text" 
-                        id="correo_electronico"
-                        name="correo_electronico"
+                        className="login__imput-text"
+                        name="email"
                         placeholder="correo_electronico" 
-                        minLength="2" maxLength="40" 
-                        className="login__imput-text"
-                        required
-                        autoComplete="off"
+                        value={email}
+                        onChange={handleChange}
+                        
                     />
-                    <input type="text" 
-                        id="contraseña"
-                        name="contraseña"
+                    <input type="text"
+                        className="login__imput-text" 
+                        name="password"
                         placeholder="contraseña"
-                        minLength="2" maxLength="200"
-                        className="login__imput-text"
-                        required
-                        autoComplete="off"
+                        value={password}
+                        onChange={handleChange}
                     />
-                    <button className=" login__button-save">Inicia sesión</button>
+                    <button onClick={handleSubmit} className=" login__button-save">Inicia sesión</button>
                     <NavLink to='/signup' className="signup__link-register">¿Aún no eres miembro? Regístrate aquí</NavLink>
                 </form>
             </div>
