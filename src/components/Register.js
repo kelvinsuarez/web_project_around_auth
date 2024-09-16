@@ -2,9 +2,13 @@ import React, {useState} from "react";
 import * as auth from '../utils/auth';
 import Logo from '../images/header/Vector.svg';
 import { NavLink, useNavigate } from "react-router-dom";
+import InfoTooltip from './InfoTooltip.js';
 
 function Register () {
     const navigate = useNavigate();
+    const [isError, setIsError] = useState(false);
+    const [error, setError] = useState('')
+    const [isTooltipOpen, setIstooltipOpen] = useState(false);
     const [values, setValues] = useState({
         email: '',
         password: '',
@@ -12,21 +16,40 @@ function Register () {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-            auth.register(values)
-            .then(() => {navigate('/signin')})
-            .catch((err) => console.log(err));
-        
+        setError('');
+        setIsError(false);
+
+        auth.register(values)
+        .then((res) => {
+            navigate('/signin')
+        })
+        .catch((err) => {
+            console.log(err);
+            if(err.includes('usuario ya está registrado')) {
+                setError('Este usuario ya está registrado. Por favor, intenta con otro correo.');
+            } else if (err.includes('400')) {
+                setError('Uno de los campos se rellenó de forma incorrecta.');    
+            } else {
+                setError('Ha ocurrido un error. Por favor, inténtalo de nuevo.');
+            }
+            setIsError(true);
+            setIstooltipOpen(true);
+         }); 
     };
 
     const handleChange = (event) => {
         const {name, value} = event.target;
         setValues({...values, [name]: value});
     }
+
+    const handleCloseTooltip = () => {
+        setIstooltipOpen(false);
+    }
     return(
         <>
            <header className="header">
                 <img className="header__logo" src={Logo} alt="logo around the U.S"/>
-                <nav className="header__nav">Inicia sesión</nav>
+                <nav onClick={() => {navigate('/signin')}} className="header__nav">Inicia sesión</nav>
                 <hr className="header__line"/>
             </header>
             <div className="signup">
@@ -39,7 +62,7 @@ function Register () {
                         value={values.email}
                         onChange={handleChange}
                     />
-                    <input type="text" 
+                    <input type="password" 
                         name="password"
                         placeholder="contraseña"
                         className="signup__imput-text"
@@ -53,6 +76,12 @@ function Register () {
                    
                 </form>
             </div>
+            <InfoTooltip 
+                isOpen={isTooltipOpen}
+                onClose={handleCloseTooltip}
+                isError={isError} 
+                message={error}
+            />
         </>
     )
 }

@@ -8,6 +8,9 @@ function Login ({handleLogin}) {
     const navigate = useNavigate();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [error, setError] = useState('');
+    const [isTooltipOpen, setIstooltipOpen] = useState(false);
+    const [isError, setIsError] = useState(false);
 
     const handleChange = (e) => {
         const {name, value} = e.target;
@@ -20,27 +23,45 @@ function Login ({handleLogin}) {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        setError('');
+        setIsError(false)
         if (!email || !password) {
+            setError('Por favor, rellena ambos campos');
+            setIsError(true);
+            setIstooltipOpen(true);
             return;
         }
+        setIstooltipOpen(true);
         auth.authorize(email, password)
         .then((data) => {
-            if (data.jwt) {
-                console.log('Token JWT desde el componente Login:', data.jwt);
+            if (data.token) {
+                console.log('Token JWT desde el componente Login:', data.token);
                 setEmail('');
                 setPassword('');
                 handleLogin()
                 navigate('/profile')
             }
         })
-        .catch((err) => console.log (err))
+        .catch((err) => {
+            console.log(err);
+            if(err.includes('400')) {
+                setError('No se ha proporcionado uno o más campos')
+            } else if(err.includes('No se ha encontrado al usuario')) {
+                setError('No se ha encontrado al usuario con el correo electrónico especificado')
+            } else {setError('Ha ocurrido un error. Por favor, inténtalo de nuevo.')};
+            setIsError(true)
+            setIstooltipOpen(true)
+        });
+    };
+    const handleCloseTooltip = () => {
+        setIstooltipOpen(false);
     }
 
     return(
         <>
             <header className="header">
                 <img className="header__logo" src={Logo} alt="logo around the U.S"/>
-                <nav className="header__nav">Regístrate</nav>
+                <nav onClick={() => {navigate('/signup')}} className="header__nav">Regístrate</nav>
                 <hr className="header__line"/>
             </header>
             <div className="login">
@@ -54,7 +75,7 @@ function Login ({handleLogin}) {
                         onChange={handleChange}
                         
                     />
-                    <input type="text"
+                    <input type="password"
                         className="login__imput-text" 
                         name="password"
                         placeholder="contraseña"
@@ -65,7 +86,12 @@ function Login ({handleLogin}) {
                     <NavLink to='/signup' className="signup__link-register">¿Aún no eres miembro? Regístrate aquí</NavLink>
                 </form>
             </div>
-            <InfoTooltip/>
+            <InfoTooltip 
+                isOpen={isTooltipOpen}
+                onClose={handleCloseTooltip}
+                isError={isError} 
+                message={error}
+            />
         </>
     )
 }

@@ -1,5 +1,5 @@
 import React, { useEffect} from 'react';
-import { Route, Routes, Navigate, Redirect} from 'react-router-dom';
+import { Route, Routes, Navigate, useNavigate} from 'react-router-dom';
 import Login from './Login.js';
 import Register from './Register.js'
 import Header from './Header';
@@ -13,16 +13,17 @@ import EditAvatarPopup from './EditAvatarPopup.js';
 import AddPlacePopup from './AddPlacePopup.js';
 import ConfirmationDeletePopup from './ConfirmationDeletePopup.js';
 import ProtectedRoute from './ProtectedRoute.js';
+import * as auth from '../utils/auth.js'
 
 
 
 function App() {
+  const navigate = useNavigate();
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = React.useState(true);
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = React.useState(true);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = React.useState(true);
   const [isConfirmacionPopupOpen, setIsConfirmacionPopupOpen] = React.useState(true);
   const [isOpenImagePopup, setIsOpenImagePopup] = React.useState(true);
-  const [isOpeninfoToolPopup,setIsOpeninfoToolPopup] = React.useState(true);
   const [selectedCard, setSelectedCard] = React.useState(null)
   const [currentUser, setCurrentUser] = React.useState({});
   const [cards, setCards] = React.useState([]);
@@ -43,6 +44,7 @@ function App() {
             }
         };
         fetchData();
+        HandleTokenCheck();
     }, []);
 
   const handleEditAvatarClick = () => {
@@ -74,7 +76,6 @@ function App() {
     setIsAddPlacePopupOpen(true);
     setIsConfirmacionPopupOpen(true);
     setIsOpenImagePopup(true);
-    setIsOpeninfoToolPopup(true);
   }
 
 
@@ -130,8 +131,19 @@ function App() {
   };
 
   const handleLogin = (e) => {
-    e.preventDefault();
     setIsLoggedIn(true)
+  }
+
+  const HandleTokenCheck = () => {
+    const jwt = localStorage.getItem('jwt');
+    if(jwt) {
+      auth.checkToken(jwt).then((res) => {
+        if (res) {
+          setIsLoggedIn(true)
+          navigate('/profile')
+        }
+      })
+    }
   }
 
   return (
