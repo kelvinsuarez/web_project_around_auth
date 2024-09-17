@@ -3,6 +3,7 @@ import * as auth from '../utils/auth';
 import Logo from '../images/header/Vector.svg';
 import { NavLink, useNavigate } from "react-router-dom";
 import InfoTooltip from './InfoTooltip.js';
+import escapeHTML from "escape-html";
 
 function Register () {
     const navigate = useNavigate();
@@ -19,7 +20,12 @@ function Register () {
         setError('');
         setIsError(false);
 
-        auth.register(values)
+        const sanitizedValues = {
+            email: escapeHTML(values.email),
+            password: escapeHTML(values.password),
+        };
+
+        auth.register(sanitizedValues)
         .then((res) => {
             navigate('/signin')
         })

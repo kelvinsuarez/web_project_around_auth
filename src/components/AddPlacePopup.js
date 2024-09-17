@@ -1,6 +1,7 @@
 import React,{useRef, useEffect} from "react";
 import PopupWithForm from "./PopupWithForm";
 import FormValidator from "../utils/FormValidator";
+import escapeHTML from "escape-html";
 
 function AddPlacePopup (props){
     const titleRef = useRef(null);
@@ -21,8 +22,8 @@ function AddPlacePopup (props){
     const handleSubmit = (evt) => {
         evt.preventDefault()
         const newCard = {
-            name: titleRef.current.value,
-            link: urlRef.current.value,
+            name: escapeHTML(titleRef.current.value),
+            link: escapeHTML(urlRef.current.value),
         }
         props.onAddCard(newCard);
     };

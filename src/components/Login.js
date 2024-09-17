@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import Logo from '../images/header/Vector.svg';
 import{ NavLink, useNavigate } from 'react-router-dom';
 import InfoTooltip from './InfoTooltip.js';
-import * as auth from '../utils/auth.js'
+import * as auth from '../utils/auth.js';
+import escapeHTML from "escape-html";
 
 function Login ({handleLogin}) {
     const navigate = useNavigate();
@@ -31,8 +32,12 @@ function Login ({handleLogin}) {
             setIstooltipOpen(true);
             return;
         }
+
+        const sanitizedEmail = escapeHTML(email);
+        const sanitizedPassword = escapeHTML(password);
+
         setIstooltipOpen(true);
-        auth.authorize(email, password)
+        auth.authorize(sanitizedEmail, sanitizedPassword)
         .then((data) => {
             if (data.token) {
                 console.log('Token JWT desde el componente Login:', data.token);

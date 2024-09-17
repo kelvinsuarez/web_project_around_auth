@@ -1,4 +1,5 @@
 import React, {useEffect, forwardRef} from "react";
+import escapeHTML from "escape-html";
 
 const PopupWithForm = forwardRef((props, ref) => {
     useEffect(() =>{
@@ -26,7 +27,7 @@ const PopupWithForm = forwardRef((props, ref) => {
             <div className={`popup${props.name}__group`}>
                 <h2 className={`popup${props.name}__icon-close popup${props.name}__icon-close:hover`} onClick={props.onClose}>+</h2>
                 <form ref={ref} name={props.name} className={`popup${props.name}__container form-popup`} noValidate onSubmit={props.onSubmit}>
-                    <h2 className={`popup${props.name}__text`} >{props.title}</h2>
+                    <h2 className={`popup${props.name}__text`} >{escapeHTML(props.title)}</h2>
                     {props.children}
                 </form>
             </div>
